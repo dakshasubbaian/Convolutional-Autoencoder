@@ -1,39 +1,91 @@
 # Convolutional Autoencoder for Image Denoising
-
 ## AIM
-
 To develop a convolutional autoencoder for image denoising application.
-
 ## Problem Statement and Dataset
-
-
+The MNIST dataset consists of 28x28 grayscale images of handwritten digits (0–9), often used for image processing tasks. The goal of this experiment is image denoising using autoencoders, a neural network designed to learn efficient representations. By introducing noise to images, the model is trained to reconstruct clean versions.
 ## DESIGN STEPS
-
-### STEP 1:
-
+## STEP 1:
+Load MNIST dataset and convert to tensors.
 ### STEP 2:
-
+Apply Gaussian noise to images for training.
 ### STEP 3:
-
-Write your own steps
-
+Design encoder-decoder architecture for reconstruction.
+### STEP 4:
+Use MSE loss to measure reconstruction quality.
+### STEP 5:
+Train autoencoder using Adam optimizer efficiently.
+### STEP 6:
+Evaluate model on noisy and clean images.
+### STEP 7:
+Visualize results comparing original, noisy, denoised versions.
+### STEP 8:
+Improve performance by tuning hyperparameters carefully.
 ## PROGRAM
-### Name:
-### Register Number:
-
-
-Include your code here
-
+## Name: DAKSHA SUBBAIAN
+### Register Number:212223230036
+```
+class DenoisingAutoencoder(nn.Module):
+    def __init__(self):
+        super(DenoisingAutoencoder, self).__init__()
+        # Define your layers here
+        # Example:
+        self.encoder = nn.Sequential(
+            nn.Linear(28 * 28, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, 12),
+            nn.ReLU(),
+            nn.Linear(12, 3)
+        )
+        self.decoder = nn.Sequential(
+            nn.Linear(3, 12),
+            nn.ReLU(),
+            nn.Linear(12, 64),
+            nn.ReLU(),
+            nn.Linear(64, 128),
+            nn.ReLU(),
+            nn.Linear(128, 28 * 28),
+            nn.Sigmoid()  # For reconstruction, sigmoid is often used
+        )
+    def forward(self, x):
+        # Include your code here
+        x = x.view(-1, 28*28)  # Flatten the input image
+        x = self.encoder(x)
+        x = self.decoder(x)
+        x = x.view(-1, 1, 28, 28)  # Reshape to image dimensions
+        return x
+```
+```
+#Initialize model, loss function and optimizer
+model = DenoisingAutoencoder().to(device)
+summary(model, (1, 28, 28))
+criterion = nn.MSELoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+```
+```
+def train(model, loader, criterion, optimizer, epochs=5):
+    model.train()
+    for epoch in range(epochs):
+        running_loss = 0.0
+        for data in loader:
+            inputs, _ = data
+            inputs = inputs.to(device)
+            optimizer.zero_grad()
+            outputs = model(inputs)
+```
 ## OUTPUT
 
 ### Model Summary
+<img width="790" height="623" alt="image" src="https://github.com/user-attachments/assets/f8102f4a-531c-4405-b2d4-d442fc90c1bc" />
 
-Include your model summary
+
 
 ### Original vs Noisy Vs Reconstructed Image
+<img width="645" height="588" alt="image" src="https://github.com/user-attachments/assets/0e0f3576-5731-429d-9bb9-b10a99dae28f" />
 
-Include a few sample images here.
-
+<img width="1718" height="564" alt="image" src="https://github.com/user-attachments/assets/1b5fdabc-7d55-4fab-8cd0-5595e4ed6ea2" />
 
 
 ## RESULT
+A convolutional autoencoder for image denoising application is developed successfully.
