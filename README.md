@@ -27,7 +27,6 @@ Improve performance by tuning hyperparameters carefully.
 class DenoisingAutoencoder(nn.Module):
     def __init__(self):
         super(DenoisingAutoencoder, self).__init__()
-        # Define your layers here
         # Example:
         self.encoder = nn.Sequential(
             nn.Linear(28 * 28, 128),
@@ -49,7 +48,6 @@ class DenoisingAutoencoder(nn.Module):
             nn.Sigmoid()  # For reconstruction, sigmoid is often used
         )
     def forward(self, x):
-        # Include your code here
         x = x.view(-1, 28*28)  # Flatten the input image
         x = self.encoder(x)
         x = self.decoder(x)
